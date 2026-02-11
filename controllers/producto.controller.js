@@ -245,6 +245,8 @@ const updateProduct = async (req, res) => {
   
   try {
     const { id } = req.params;
+    // Aseguramos que req.body exista (multer puede estar presente para FormData)
+    const body = req.body || {};
     const {
       name,
       description,
@@ -258,9 +260,10 @@ const updateProduct = async (req, res) => {
       brandIconUrl,
       colors = [],
       variants = []
-    } = req.body;
+    } = body;
     
     console.log(`🔄 PUT: Actualizando producto ID: ${id}`);
+    console.log(`   🧾 Datos recibidos: ${Object.keys(body).length ? JSON.stringify(body) : 'No body parsed'}`);
     
     // Verificar que el producto existe
     const [existingProduct] = await connection.query('SELECT * FROM products WHERE id = ?', [id]);

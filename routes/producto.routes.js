@@ -77,9 +77,9 @@ router.post('/', verifyToken, productsMultipleUpload, createProduct);
 
 /**
  * PUT /api/productos/:id
- * Actualizar un producto (sin imágenes)
+ * Actualizar un producto (acepta FormData y/o imágenes)
  */
-router.put('/:id', verifyToken, updateProduct);
+router.put('/:id', verifyToken, productsMultipleUpload, updateProduct);
 
 /**
  * PUT /api/productos/:id/con-imagenes
