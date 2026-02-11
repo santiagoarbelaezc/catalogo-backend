@@ -9,6 +9,7 @@ const { testDatabase } = require('./config/db');
 
 // Importar rutas
 const productoRoutes = require('./routes/producto.routes');
+const authRoutes = require('./routes/auth.routes');
 
 const app = express();
 
@@ -20,6 +21,9 @@ app.use(express.urlencoded({ extended: true }));
 // ==========================================
 // 🛣️ RUTAS DE LA APLICACIÓN
 // ==========================================
+
+// Rutas de Autenticación
+app.use('/api/auth', authRoutes);
 
 // Rutas de Productos
 app.use('/api/productos', productoRoutes);
@@ -166,6 +170,10 @@ async function initializeServer() {
       console.log(`✅ Servidor ejecutándose en: http://localhost:${PORT}`);
       console.log('\n📌 RUTAS DISPONIBLES:');
       console.log(`   GET http://localhost:${PORT}/health - Health check`);
+      console.log(`   POST http://localhost:${PORT}/api/auth/login - Login de usuario`);
+      console.log(`   POST http://localhost:${PORT}/api/auth/register - Registro de usuario`);
+      console.log(`   POST http://localhost:${PORT}/api/auth/logout - Logout de usuario`);
+      console.log(`   GET http://localhost:${PORT}/api/auth/profile - Perfil de usuario (requiere auth)`);
       console.log(`   GET http://localhost:${PORT}/api/productos - Obtener todos los productos`);
       console.log(`   GET http://localhost:${PORT}/api/productos/:id - Obtener producto por ID`);
       console.log(`   GET http://localhost:${PORT}/api/productos/categoria/:category - Productos por categoría\n`);

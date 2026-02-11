@@ -69,7 +69,7 @@ router.get('/:id', getProductById);
  *   Tipos permitidos: JPEG, PNG, JPG, WEBP
  *   Tamaño máximo: 5MB por archivo
  */
-router.post('/', productsMultipleUpload, createProduct);
+router.post('/', verifyToken, productsMultipleUpload, createProduct);
 
 // ==========================================
 // 🔄 PUT ROUTES
@@ -79,13 +79,13 @@ router.post('/', productsMultipleUpload, createProduct);
  * PUT /api/productos/:id
  * Actualizar un producto (sin imágenes)
  */
-router.put('/:id', updateProduct);
+router.put('/:id', verifyToken, updateProduct);
 
 /**
  * PUT /api/productos/:id/con-imagenes
  * Actualizar un producto con imágenes
  */
-router.put('/:id/con-imagenes', productsMultipleUpload, updateProduct);
+router.put('/:id/con-imagenes', verifyToken, productsMultipleUpload, updateProduct);
 
 // ==========================================
 // 🗑️ DELETE ROUTES
@@ -95,12 +95,12 @@ router.put('/:id/con-imagenes', productsMultipleUpload, updateProduct);
  * DELETE /api/productos/:id
  * Eliminar un producto (soft delete)
  */
-router.delete('/:id', deleteProduct);
+router.delete('/:id', verifyToken, deleteProduct);
 
 /**
  * DELETE /api/productos/:id/permanent
  * Eliminar permanentemente un producto
  */
-router.delete('/:id/permanent', permanentlyDeleteProduct);
+router.delete('/:id/permanent', verifyToken, permanentlyDeleteProduct);
 
 module.exports = router;
