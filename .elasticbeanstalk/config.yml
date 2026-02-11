@@ -2,6 +2,9 @@ branch-defaults:
   default:
     environment: catalogo-prod
     group_suffix: null
+  main:
+    environment: catalogo-prod
+    group_suffix: null
 global:
   application_name: catalogo-backend
   branch: null
@@ -14,5 +17,5 @@ global:
   platform_version: null
   profile: null
   repository: null
-  sc: null
+  sc: git
   workspace_type: Application

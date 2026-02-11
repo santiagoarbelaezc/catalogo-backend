@@ -22,6 +22,16 @@ app.use(express.urlencoded({ extended: true }));
 // 🛣️ RUTAS DE LA APLICACIÓN
 // ==========================================
 
+// Ruta raíz
+app.get('/', (req, res) => {
+  res.status(200).json({
+    message: '✅ Catalogo Backend API',
+    version: '1.0.0',
+    status: 'active',
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Rutas de Autenticación
 app.use('/api/auth', authRoutes);
 
