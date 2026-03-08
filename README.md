@@ -18,6 +18,13 @@
 *Backend optimizado para alta disponibilidad y performance empresarial*
 
 ---
+Migracion planeada a PHP
+
+Node JS -------> PHP 
+
+Despliegue en Hostinger en el administrador de archivos
+---
+## 📋 Tabla de Contenidos
 
 </div>
 
