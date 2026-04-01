@@ -62,23 +62,23 @@ app.get('/health', (req, res) => {
 app.get('/api/test/cloudinary', async (req, res) => {
   try {
     console.log('\n📡 Testing Cloudinary desde ruta...');
-    
+
     const configOk = await testCloudinaryConfig();
     const connectionOk = await testCloudinaryConnection();
-    
+
     const result = {
       config: configOk,
       connection: connectionOk,
       status: configOk && connectionOk ? '✅ Cloudinary OK' : '❌ Cloudinary con errores'
     };
-    
+
     serverStatus.cloudinary = configOk && connectionOk;
-    
+
     res.status(configOk && connectionOk ? 200 : 500).json({
       cloudinary: result,
       timestamp: new Date().toISOString()
     });
-    
+
   } catch (error) {
     console.error('Error en test/cloudinary:', error);
     serverStatus.cloudinary = false;
@@ -94,21 +94,21 @@ app.get('/api/test/cloudinary', async (req, res) => {
 app.get('/api/test/database', async (req, res) => {
   try {
     console.log('\n📡 Testing Base de Datos desde ruta...');
-    
+
     const dbOk = await testDatabase();
-    
+
     const result = {
       connection: dbOk,
       status: dbOk ? '✅ Base de Datos OK' : '❌ Base de Datos con errores'
     };
-    
+
     serverStatus.database = dbOk;
-    
+
     res.status(dbOk ? 200 : 500).json({
       database: result,
       timestamp: new Date().toISOString()
     });
-    
+
   } catch (error) {
     console.error('Error en test/database:', error);
     serverStatus.database = false;
@@ -124,24 +124,24 @@ app.get('/api/test/database', async (req, res) => {
 app.get('/api/test/all', async (req, res) => {
   try {
     console.log('\n🚀 TEST COMPLETO: Probando todos los servicios...\n');
-    
+
     const configOk = await testCloudinaryConfig();
     const cloudinaryOk = await testCloudinaryConnection();
     const databaseOk = await testDatabase();
-    
+
     serverStatus.cloudinary = configOk && cloudinaryOk;
     serverStatus.database = databaseOk;
     serverStatus.timestamp = new Date().toISOString();
-    
+
     const allOk = serverStatus.cloudinary && serverStatus.database;
-    
+
     console.log('\n' + '='.repeat(50));
     console.log('📊 RESUMEN DE PRUEBAS');
     console.log('='.repeat(50));
     console.log(`☁️  Cloudinary: ${serverStatus.cloudinary ? '✅ OK' : '❌ ERROR'}`);
     console.log(`🗄️  Base de Datos: ${serverStatus.database ? '✅ OK' : '❌ ERROR'}`);
     console.log('='.repeat(50));
-    
+
     res.status(allOk ? 200 : 500).json({
       success: allOk,
       services: {
@@ -149,11 +149,11 @@ app.get('/api/test/all', async (req, res) => {
         database: serverStatus.database
       },
       timestamp: new Date().toISOString(),
-      message: allOk 
+      message: allOk
         ? '✅ Todos los servicios están operativos'
         : '⚠️  Algunos servicios tienen problemas'
     });
-    
+
   } catch (error) {
     console.error('Error en test/all:', error);
     res.status(500).json({
@@ -174,10 +174,14 @@ const PORT = process.env.PORT || 5000;
 async function initializeServer() {
   try {
     console.log('\n🔧 Inicializando servidor...\n');
-    
+
     // Iniciar servidor HTTP
-    const server = app.listen(PORT, () => {
+    const server = app.listen(PORT, async () => {
       console.log(`✅ Servidor ejecutándose en: http://localhost:${PORT}`);
+
+      // Probar conexión a Base de Datos al iniciar
+      await testDatabase();
+
       console.log('\n📌 RUTAS DISPONIBLES:');
       console.log(`   GET http://localhost:${PORT}/health - Health check`);
       console.log(`   POST http://localhost:${PORT}/api/auth/login - Login de usuario`);
@@ -188,9 +192,9 @@ async function initializeServer() {
       console.log(`   GET http://localhost:${PORT}/api/productos/:id - Obtener producto por ID`);
       console.log(`   GET http://localhost:${PORT}/api/productos/categoria/:category - Productos por categoría\n`);
     });
-    
+
     return server;
-    
+
   } catch (error) {
     console.error('❌ Error inicializando servidor:', error.message);
     process.exit(1);
